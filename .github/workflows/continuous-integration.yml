@@ -94,12 +94,12 @@ jobs:
           ctest --output-on-failure
 
       - name: Install
-        if: ${{ github.repository == 'JNechaevsky/inter-doom' && github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.os.name == 'Windows' }}
+        if: ${{ github.repository == 'kmeaw/inter-doom' && github.event_name == 'push' && matrix.os.name == 'Windows' }}
         run: |
           cmake --install build --prefix "./build/install"
 
       - name: Package Zip
-        if: ${{ github.repository == 'JNechaevsky/inter-doom' && github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.os.name == 'Windows' }}
+        if: ${{ github.repository == 'kmeaw/inter-doom' && github.event_name == 'push' && matrix.os.name == 'Windows' }}
         uses: actions/upload-artifact@v2
         with:
           name: inter-doom-${{ steps.configure.outputs.sha_short }}-windows-${{ matrix.arch.name }}
