@@ -231,6 +231,9 @@ static void M_RD_FixMapErrors();
 static void M_RD_FlipLevels();
 static void M_RD_NoDemos();
 static void M_RD_Breathing();
+#ifdef HEXEN_HAS_EXIT_CONFIRMATION
+static void M_RD_ExitConfirm();
+#endif
 
 // Level Select (1)
 static void DrawLevelSelect1Menu(void);
@@ -1301,7 +1304,11 @@ static MenuItem_t Gameplay3Items[] = {
     {ITT_SWITCH, "FLIP GAME LEVELS:",    "PTHRFKMYJT JNHF;TYBT EHJDYTQ:", M_RD_FlipLevels,      0}, // ЗЕРКАЛЬНОЕ ОТРАЖЕНИЕ УРОВНЕЙ
     {ITT_SWITCH, "PLAY INTERNAL DEMOS:", "GHJBUHSDFNM LTVJPFGBCB:",       M_RD_NoDemos,         0}, // ПРОИГРЫВАТЬ ДЕМОЗАПИСИ
     {ITT_SWITCH,  "IMITATE PLAYER'S BREATHING:", "BVBNFWBZ LS[FYBZ BUHJRF:", M_RD_Breathing,    0}, // ИМИТАЦИЯ ДЫХАНИЯ ИГРОКА
+#if defined(HEXEN_HAS_EXIT_CONFIRMATION)
+    {ITT_SWITCH, "EXIT CONFIRMATION:",   "GJLNDTH;LTYBT DS{JLF:",         M_RD_ExitConfirm,     0}, // ПОДТВЕРЖДЕНИЕ ВЫХОДА
+#else
     {ITT_EMPTY,   NULL,                  NULL,                            NULL,                 0},
+#endif
     {ITT_EMPTY,   NULL,                  NULL,                            NULL,                 0},
     {ITT_EMPTY,   NULL,                  NULL,                            NULL,                 0},
     {ITT_EMPTY,   NULL,                  NULL,                            NULL,                 0},
@@ -4586,6 +4593,13 @@ static void M_RD_Breathing()
 {
     breathing ^= 1;
 }
+
+#ifdef HEXEN_HAS_EXIT_CONFIRMATION
+static void M_RD_ExitConfirm()
+{
+    exit_confirmation ^= 1;
+}
+#endif
 
 
 //---------------------------------------------------------------------------

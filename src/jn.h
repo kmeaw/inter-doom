@@ -324,6 +324,9 @@ extern int demotimerdir;
 extern int demobar;
 extern int no_internal_demos;
 
+// Gameplay: Miscellaneous
+extern int exit_confirmation;
+
 
 // -----------------------------------------------------------------------------
 // Doom Press Release Beta

@@ -241,6 +241,7 @@ static void M_RD_FlipLevels();
 static void M_RD_NoDemos();
 static void M_RD_Breathing();
 static void M_RD_WandStart();
+static void M_RD_ExitConfirm();
 
 // Level Select (page 1)
 static void DrawLevelSelect1Menu(void);
@@ -1277,7 +1278,7 @@ static MenuItem_t Gameplay4Items[] = {
     {ITT_SWITCH,  "PLAY INTERNAL DEMOS:",        "GHJBUHSDFNM LTVJPFGBCB:",         M_RD_NoDemos,      0}, // ПРОИГРЫВАТЬ ДЕМОЗАПИСИ
     {ITT_SWITCH,  "IMITATE PLAYER'S BREATHING:", "BVBNFWBZ LS[FYBZ BUHJRF:",        M_RD_Breathing,    0}, // ИМИТАЦИЯ ДЫХАНИЯ ИГРОКА
     {ITT_SWITCH,  "WAND START GAME MODE:",       NULL, /* [JN] Joint EN/RU string*/ M_RD_WandStart,    0}, // РЕЖИМ ИГРЫ "WAND START"
-    {ITT_EMPTY,   NULL,                          NULL,                              NULL,              0},
+    {ITT_SWITCH,  "EXIT CONFIRMATION:",          "GJLNDTH;LTYBT DS{JLF:",           M_RD_ExitConfirm,  0}, // ПОДТВЕРЖДЕНИЕ ВЫХОДА
     {ITT_EMPTY,   NULL,                          NULL,                              NULL,              0},
     {ITT_EMPTY,   NULL,                          NULL,                              NULL,              0},
     {ITT_EMPTY,   NULL,                          NULL,                              NULL,              0},
@@ -1714,6 +1715,7 @@ char *QuitEndMsg[] = {
     "DO YOU WANT TO QUICKLOAD THE GAME NAMED",
     "RESET SETTINGS TO THEIR DEFAULTS?",
     "ARE YOU SURE YOU WANT TO DELETE SAVED GAME:",
+    "ARE YOU SURE YOU WANT TO EXIT THIS LEVEL?",
 };
 
 char *QuitEndMsg_Rus[] = {
@@ -1723,6 +1725,7 @@ char *QuitEndMsg_Rus[] = {
     "DSGJKYBNM ,SCNHE. PFUHEPRE BUHS:",           // ВЫПОЛНИТЬ БЫСТРУЮ ЗАГРУЗКУ ИГРЫ:
     "C,HJCBNM YFCNHJQRB YF CNFYLFHNYST PYFXTYBZ?",// СБРОСИТЬ НАСТРОЙКИ НА СТАНДАРТНЫЕ ЗНАЧЕНИЯ?
     "ELFKBNM CJ[HFYTYYE. BUHE:",                  // УДАЛИТЬ СОХРАНЕННУЮ ИГРУ:
+    "DS LTQCNDBNTKMYJ ;TKFTNT DSQNB C EHJDYZ?",   // ВЫ ДЕЙСТВИТЕЛЬНО ЖЕЛАЕТЕ ВЫЙТИ С УРОВНЯ?
 };
 
 void MN_Drawer(void)
@@ -4624,6 +4627,11 @@ static void M_RD_WandStart()
     pistol_start ^= 1;
 }
 
+static void M_RD_ExitConfirm()
+{
+    exit_confirmation ^= 1;
+}
+
 // -----------------------------------------------------------------------------
 // DrawLevelSelect1Menu
 // -----------------------------------------------------------------------------
@@ -5859,6 +5867,10 @@ boolean MN_Responder(event_t * event)
                     break;
                 }
 
+                case 7:
+                    G_ExitLevel ();
+                    break;
+
                 default:
                     break;
             }
@@ -6363,4 +6375,11 @@ void RD_Menu_StartSound(MenuSound_t sound)
         default:
             break;
     }
+}
+
+void M_ConfirmLevelExit ()
+{
+    askforquit = true;
+    typeofask = 7; // are you sure you want to exit this level?
+    S_StartSound(NULL, sfx_chat);
 }

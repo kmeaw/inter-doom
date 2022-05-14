@@ -25,6 +25,8 @@
 #include "v_video.h"
 #include "jn.h"
 
+extern void M_ConfirmLevelExit ();
+
 //==================================================================
 //
 //      CHANGE THE TEXTURE OF A WALL SWITCH TO ITS OPPOSITE
@@ -255,8 +257,16 @@ boolean P_UseSpecialLine(mobj_t * thing, line_t * line)
                 P_ChangeSwitchTexture(line, 0);
             break;
         case 11:               // Exit level
-            G_ExitLevel();
-            P_ChangeSwitchTexture(line, 0);
+            if (exit_confirmation)
+            {
+                M_ConfirmLevelExit ();
+                return false;
+            }
+            else
+            {
+                P_ChangeSwitchTexture(line,0);
+                G_ExitLevel ();
+            }
             break;
         case 14:               // Raise Floor 32 and change texture
             if (EV_DoPlat(line, raiseAndChange, 32))

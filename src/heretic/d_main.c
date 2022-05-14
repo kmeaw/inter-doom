@@ -210,6 +210,9 @@ int no_internal_demos = 0;
 int breathing = 0;
 int pistol_start = 0;
 
+// Gameplay: Miscellaneous
+int exit_confirmation = 0;
+
 // Level Select (1)
 int selective_skill = 2;
 int selective_episode = 1;
@@ -1056,6 +1059,7 @@ void D_BindVariables(void)
     M_BindIntVariable("no_internal_demos",      &no_internal_demos);
     M_BindIntVariable("breathing",              &breathing);
     M_BindIntVariable("pistol_start",           &pistol_start);
+    M_BindIntVariable("exit_confirmation",      &exit_confirmation);
 
     for (i=0; i<10; ++i)
     {

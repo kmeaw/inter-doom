@@ -289,6 +289,9 @@ int selective_puzzle_14 = 0; // GLAIVE SEAL
 int selective_puzzle_15 = 0; // HOlY RELIC
 int selective_puzzle_16 = 0; // SIGIL OF THE MAGUS
 
+// Gameplay: Miscellaneous
+int exit_confirmation = 0;
+
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
 static int WarpMap;
@@ -381,6 +384,7 @@ void D_BindVariables(void)
     M_BindIntVariable("flip_levels",            &flip_levels);
     M_BindIntVariable("no_internal_demos",      &no_internal_demos);
     M_BindIntVariable("breathing",              &breathing);
+    M_BindIntVariable("exit_confirmation",      &exit_confirmation);
 
     // Gameplay: Crosshair
     M_BindIntVariable("crosshair_draw",         &crosshair_draw);

@@ -116,6 +116,9 @@ extern int demotimerdir;
 extern int demobar;
 extern int no_internal_demos;
 
+// Gameplay: Miscellaneous
+extern int exit_confirmation;
+
 // Прицел
 extern int crosshair_draw;
 extern int crosshair_type;

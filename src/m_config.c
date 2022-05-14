@@ -701,6 +701,9 @@ static default_t defaults_list[] =
     CONFIG_VARIABLE_INT(demotimerdir),
     CONFIG_VARIABLE_INT(demobar),
     CONFIG_VARIABLE_INT(no_internal_demos),
+
+    // Gameplay: Miscellaneous
+    CONFIG_VARIABLE_INT(exit_confirmation),
 };
 
 static default_collection_t default_collection =

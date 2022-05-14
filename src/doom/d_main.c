@@ -267,6 +267,9 @@ int demotimerdir = 0;
 int demobar = 0;
 int no_internal_demos = 0;
 
+// Gameplay: Miscellaneous
+int exit_confirmation = 0;
+
 
 void D_ConnectNetGame(void);
 void D_CheckNetGame(void);
@@ -972,6 +975,9 @@ void D_BindVariables(void)
     M_BindIntVariable("demotimerdir",           &demotimerdir);
     M_BindIntVariable("demobar",                &demobar);
     M_BindIntVariable("no_internal_demos",      &no_internal_demos);
+
+    // Gameplay: Miscellaneous
+    M_BindIntVariable("exit_confirmation",      &exit_confirmation);
 
     // Multiplayer chat macros
     for (i=0; i<10; ++i)

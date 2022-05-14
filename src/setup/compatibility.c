@@ -119,6 +119,9 @@ int demotimerdir = 0;
 int demobar = 0;
 int no_internal_demos = 0;
 
+// Gameplay: Miscellaneous
+int exit_confirmation = 0;
+
 
 // int show_exit_sequence = 1;  // [Strife]
 

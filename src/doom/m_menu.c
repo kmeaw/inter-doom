@@ -274,6 +274,7 @@ static void M_RD_Draw_Gameplay_2();
 static void M_RD_Draw_Gameplay_3();
 static void M_RD_Draw_Gameplay_4();
 static void M_RD_Draw_Gameplay_5();
+static void M_RD_Draw_Gameplay_6();
 
 // Page 1
 static void M_RD_Change_Brightmaps();
@@ -336,6 +337,9 @@ static void M_RD_Change_DemoTimer(Direction_t direction);
 static void M_RD_Change_DemoTimerDir();
 static void M_RD_Change_DemoBar();
 static void M_RD_Change_NoInternalDemos();
+
+// Page 6
+static void M_RD_Change_ExitConfirmation();
 
 // Level select
 static void M_LevelSelect(int choice);
@@ -482,7 +486,8 @@ static Menu_t Gameplay2Menu;
 static Menu_t Gameplay3Menu;
 static Menu_t Gameplay4Menu;
 static Menu_t Gameplay5Menu;
-static const Menu_t* GameplayMenuPages[] = {&Gameplay1Menu, &Gameplay2Menu, &Gameplay3Menu, &Gameplay4Menu, &Gameplay5Menu};
+static Menu_t Gameplay6Menu;
+static const Menu_t* GameplayMenuPages[] = {&Gameplay1Menu, &Gameplay2Menu, &Gameplay3Menu, &Gameplay4Menu, &Gameplay5Menu, &Gameplay6Menu};
 static Menu_t LevelSelect1Menu;
 static Menu_t LevelSelect2Menu;
 static const Menu_t* LevelSelectMenuPages[] = {&LevelSelect1Menu, &LevelSelect2Menu};
@@ -1283,7 +1288,7 @@ static Menu_t Gamepad2Menu = {
 // -----------------------------------------------------------------------------
 
 static const PageDescriptor_t GameplayPageDescriptor = {
-    5, GameplayMenuPages,
+    6, GameplayMenuPages,
     252, 155,
     CR_WHITE
 };
@@ -1302,7 +1307,7 @@ static MenuItem_t Gameplay1Items[] = {
     {ITT_SWITCH,  "Flip weapons:",                "pthrfkmyjt jnhf;tybt jhe;bz:",   M_RD_Change_FlipWeapons,     0}, // Зеркальное отражение оружия
     {ITT_EMPTY,   NULL,                           NULL,                             NULL,                        0},
     {ITT_SETMENU, NULL, /* Next Page > */         NULL,                             &Gameplay2Menu,              0}, // Далее >
-    {ITT_SETMENU, NULL, /* < Last Page */         NULL,                             &Gameplay5Menu,              0}  // < Назад
+    {ITT_SETMENU, NULL, /* < Last Page */         NULL,                             &Gameplay6Menu,              0}  // < Назад
 };
 
 static Menu_t Gameplay1Menu = {
@@ -1413,7 +1418,7 @@ static MenuItem_t Gameplay5Items[] = {
     {ITT_SWITCH,  "timer direction:",                    "dhtvz nfqvthf:",                  M_RD_Change_DemoTimerDir,    0}, // Время таймера
     {ITT_SWITCH,  "Show progress bar:",                  "irfkf ghjuhtccf:",                M_RD_Change_DemoBar,         0}, // Шкала прогресса
     {ITT_SWITCH,  "Play internal demos:",                "Ghjbuhsdfnm ltvjpfgbcb:",         M_RD_Change_NoInternalDemos, 0}, // Проигрывать демозаписи
-    {ITT_SETMENU, NULL, /* First page > */               NULL,                              &Gameplay1Menu,              0}, // Далее >
+    {ITT_SETMENU, NULL, /* Next page > */                NULL,                              &Gameplay6Menu,              0}, // Далее >
     {ITT_SETMENU, NULL, /* < Prev page > */              NULL,                              &Gameplay4Menu,              0}  // < Назад
 };
 
@@ -1423,6 +1428,34 @@ static Menu_t Gameplay5Menu = {
     "GAMEPLAY FEATURES", "YFCNHJQRB UTQVGKTZ", false, // НАСТРОЙКИ ГЕЙМПЛЕЯ
     15, Gameplay5Items, false,
     M_RD_Draw_Gameplay_5,
+    &GameplayPageDescriptor,
+    &RDOptionsMenu,
+    1
+};
+
+static MenuItem_t Gameplay6Items[] = {
+    {ITT_TITLE,  "Miscellaneous:",        "Hfpyjt:",                     NULL,                          0}, // Разное
+    {ITT_SWITCH, "Exit confirmation:",    "Gjlndth;ltybt dsjlf:",        M_RD_Change_ExitConfirmation,  0}, // Подтверждение выхода
+    {ITT_EMPTY,  NULL,                    NULL,                          NULL,                          0},
+    {ITT_EMPTY,  NULL,                    NULL,                          NULL,                          0},
+    {ITT_EMPTY,  NULL,                    NULL,                          NULL,                          0},
+    {ITT_EMPTY,  NULL,                    NULL,                          NULL,                          0},
+    {ITT_EMPTY,  NULL,                    NULL,                          NULL,                          0},
+    {ITT_EMPTY,  NULL,                    NULL,                          NULL,                          0},
+    {ITT_EMPTY,  NULL,                    NULL,                          NULL,                          0},
+    {ITT_EMPTY,  NULL,                    NULL,                          NULL,                          0},
+    {ITT_EMPTY,  NULL,                    NULL,                          NULL,                          0},
+    {ITT_EMPTY,  NULL,                    NULL,                          NULL,                          0},
+    {ITT_SETMENU,NULL, /* First Page > */ NULL,                          &Gameplay1Menu,                0}, // Далее >
+    {ITT_SETMENU,NULL, /* < Prev page */  NULL,                          &Gameplay5Menu,                0}  // < Назад
+};
+
+static Menu_t Gameplay6Menu = {
+    35, 35,
+    25,
+    "GAMEPLAY FEATURES", "YFCNHJQRB UTQVGKTZ", false, // НАСТРОЙКИ ГЕЙМПЛЕЯ
+    15, Gameplay6Items, false,
+    M_RD_Draw_Gameplay_6,
     &GameplayPageDescriptor,
     &RDOptionsMenu,
     1
@@ -4683,7 +4716,7 @@ static void M_RD_Draw_Gameplay_5(void)
         //
         // Footer
         //
-        RD_M_DrawTextSmallENG("first page >", 35 + wide_delta, 145, CR_WHITE);
+        RD_M_DrawTextSmallENG("next page >", 35 + wide_delta, 145, CR_WHITE);
         RD_M_DrawTextSmallENG("< prev page", 35 + wide_delta, 155, CR_WHITE);
     }
     else
@@ -4732,6 +4765,41 @@ static void M_RD_Draw_Gameplay_5(void)
         // Проигрывать демозаписи
         RD_M_DrawTextSmallRUS(no_internal_demos ? RD_OFF_RUS : RD_ON_RUS, 219 + wide_delta, 135,
                               no_internal_demos ? CR_DARKRED : CR_GREEN);
+
+        //
+        // Footer
+        //
+        RD_M_DrawTextSmallRUS(RD_NEXT_RUS, 35 + wide_delta, 145, CR_WHITE);
+        RD_M_DrawTextSmallRUS(RD_PREV_RUS, 35 + wide_delta, 155, CR_WHITE);
+    }
+}
+
+static void M_RD_Draw_Gameplay_6()
+{
+    // Jaguar: hide game background, don't draw lines over the HUD
+    if (gamemission == jaguar)
+    {
+        V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("INTERPIC"), PU_CACHE), false);
+    }
+
+    if (english_language)
+    {
+        // Exit confirmation
+        RD_M_DrawTextSmallENG(exit_confirmation ? RD_ON : RD_OFF, 226 + wide_delta, 35,
+                              exit_confirmation ? CR_GREEN : CR_DARKRED);
+
+
+        //
+        // Footer
+        //
+        RD_M_DrawTextSmallENG("first page >", 35 + wide_delta, 145, CR_WHITE);
+        RD_M_DrawTextSmallENG("< prev page", 35 + wide_delta, 155, CR_WHITE);
+    }
+    else
+    {
+        // Подтрвеждение выхода
+        RD_M_DrawTextSmallRUS(exit_confirmation ? RD_ON_RUS : RD_OFF_RUS, 269 + wide_delta, 35,
+                              exit_confirmation ? CR_GREEN : CR_DARKRED);
 
         //
         // Footer
@@ -5126,6 +5194,15 @@ static void M_RD_Change_DemoBar()
 static void M_RD_Change_NoInternalDemos()
 {
     no_internal_demos ^= 1;
+}
+
+//
+// Gameplay: Miscellaneous
+//
+
+static void M_RD_Change_ExitConfirmation()
+{
+    exit_confirmation ^= 1;
 }
 
 // -----------------------------------------------------------------------------
@@ -5935,6 +6012,9 @@ static void M_RD_BackToDefaults_Recommended(int choice)
     demobar           = 0;
     no_internal_demos = 0;
 
+    // Gameplay: Miscellaneous
+    exit_confirmation = 0;
+
     // Reinitialize graphics
     I_ReInitGraphics(REINIT_RENDERER | REINIT_TEXTURES | REINIT_ASPECTRATIO);
 
@@ -6120,6 +6200,9 @@ static void M_RD_BackToDefaults_Original(int choice)
     demotimerdir      = 0;
     demobar           = 0;
     no_internal_demos = 0;
+
+    // Gameplay: Miscellaneous
+    exit_confirmation = 0;
 
     // Reinitialize graphics
     I_ReInitGraphics(REINIT_RENDERER | REINIT_TEXTURES | REINIT_ASPECTRATIO);
@@ -7843,4 +7926,25 @@ void RD_Menu_StartSound(MenuSound_t sound)
         default:
             break;
     }
+}
+
+static void M_ConfirmLevelExitResponse (boolean confirmed)
+{
+    if (confirmed)
+    {
+        G_ExitLevel ();
+    }
+}
+
+void M_ConfirmLevelExit ()
+{
+    M_StartMessage(
+            english_language ? "are you sure you want to\nexit this level?\n\n" PRESSYN
+            : "ds edthtys xnj [jnbnt\ndsqnb c ehjdyz?\n\n" PRESSYN_RUS,
+            M_ConfirmLevelExitResponse,
+            true
+    );
+
+    messageToPrint = 2;
+    S_StartSound(NULL,sfx_swtchn);
 }
