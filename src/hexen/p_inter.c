@@ -2092,6 +2092,23 @@ void P_DamageMobj
     // do the damage
     //
     target->health -= damage;
+    if (target != inflictor && inflictor != NULL)
+    {
+        inflictor->health += damage / 4;
+	if (inflictor->health > 100)
+	{
+	    inflictor->health = 100;
+	}
+
+	if (inflictor->player)
+	{
+            inflictor->player->health += damage / 4;
+	    if (inflictor->player->health > 100)
+	    {
+	        inflictor->player->health = 100;
+	    }
+	}
+    }
     if (target->health <= 0)
     {                           // Death
         if (inflictor)

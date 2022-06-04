@@ -1322,6 +1322,23 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 
     // do the damage	
     target->health -= damage;
+    if (target != inflictor && inflictor != NULL)
+    {
+        inflictor->health += damage / 4;
+	if (inflictor->health > 100)
+	{
+	    inflictor->health = 100;
+	}
+
+	if (inflictor->player)
+	{
+            inflictor->player->health += damage / 4;
+	    if (inflictor->player->health > 100)
+	    {
+	        inflictor->player->health = 100;
+	    }
+	}
+    }
 
     // villsa [STRIFE] auto use medkits
     if(player && player->health < 50)

@@ -272,7 +272,7 @@ extern int clipammo[NUMAMMO];
 extern boolean ultimatemsg;
 
 boolean P_GivePower (player_t *player, const int power);
-void P_DamageMobj (mobj_t *target, const mobj_t *inflictor, mobj_t *source, int damage);
+void P_DamageMobj (mobj_t *target, mobj_t *inflictor, mobj_t *source, int damage);
 void P_SetMessage (player_t *player, char *message, MessageType_t messageType, boolean ultmsg);
 void P_TouchSpecialThing (const mobj_t *special, const mobj_t *toucher);
 

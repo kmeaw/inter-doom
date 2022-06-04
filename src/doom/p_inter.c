@@ -978,7 +978,7 @@ static void P_KillMobj (const mobj_t *source, mobj_t *target)
 // Source can be NULL for slime, barrel explosions and other environmental stuff.
 // -----------------------------------------------------------------------------
 
-void P_DamageMobj (mobj_t *target, const mobj_t *inflictor, mobj_t *source, int damage)
+void P_DamageMobj (mobj_t *target, mobj_t *inflictor, mobj_t *source, int damage)
 {
     player_t  *player;
     fixed_t    thrust;
@@ -1097,6 +1097,23 @@ void P_DamageMobj (mobj_t *target, const mobj_t *inflictor, mobj_t *source, int 
 
     // do the damage	
     target->health -= damage;	
+    if (target != inflictor && inflictor != NULL)
+    {
+        inflictor->health += damage / 4;
+	if (inflictor->health > 200)
+	{
+	    inflictor->health = 200;
+	}
+
+	if (inflictor->player)
+	{
+            inflictor->player->health += damage / 4;
+	    if (inflictor->player->health > 200)
+	    {
+	        inflictor->player->health = 200;
+	    }
+	}
+    }
 
     if (target->health <= 0)
     {
